@@ -1,0 +1,26 @@
+# Ignore All By Default
+*
+
+# C/C++
+!*.c
+!*.cc
+!*.cpp
+!*.h
+!*.hpp
+
+# Script
+!*.bat
+!*.cmd
+!*.sh
+
+# Text
+!*.txt
+!*.md
+
+# Important Information
+!README
+!AUTHORS
+!LICENSE
+
+# Git
+!.git*

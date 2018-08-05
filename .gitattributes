@@ -1,0 +1,5 @@
+# Default to Auto
+* text=auto
+
+# Unix Script Uses LF EOL
+*.sh text eol=lf
