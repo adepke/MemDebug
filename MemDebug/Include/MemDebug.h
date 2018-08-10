@@ -51,6 +51,71 @@ namespace MemDebug
 	}
 
 	/*
+	* Total Memory Allocated in Bytes in a Named Region.
+	*/
+	size_t GetTotalAllocated(const char* RegionName)
+	{
+		if (RegionName)
+		{
+			return Allocator::Get().TotalAllocatedByRegion[RegionName];
+		}
+
+		return GetTotalAllocated();
+	}
+
+	/*
+	* Total Memory Released in Bytes in a Named Region.
+	*/
+	size_t GetTotalDeallocated(const char* RegionName)
+	{
+		if (RegionName)
+		{
+			return Allocator::Get().TotalDeallocatedByRegion[RegionName];
+		}
+
+		return GetTotalDeallocated();
+	}
+
+	/*
+	* Total Memory Allocated and Not Yet Released in Bytes in a Named Region.
+	*/
+	size_t GetCurrentlyAllocated(const char* RegionName)
+	{
+		if (RegionName)
+		{
+			return Allocator::Get().CurrentlyAllocatedByRegion[RegionName];
+		}
+
+		return GetCurrentlyAllocated();
+	}
+
+	/*
+	* Most Recent Allocation in Bytes in a Named Region.
+	*/
+	size_t GetLastAllocated(const char* RegionName)
+	{
+		if (RegionName)
+		{
+			return Allocator::Get().LastAllocatedByRegion[RegionName];
+		}
+
+		return GetLastAllocated();
+	}
+
+	/*
+	* Most Recent Release in Bytes in a Named Region.
+	*/
+	size_t GetLastDeallocated(const char* RegionName)
+	{
+		if (RegionName)
+		{
+			return Allocator::Get().LastDeallocatedByRegion[RegionName];
+		}
+
+		return GetLastDeallocated();
+	}
+
+	/*
 	* Retrieve a List of All Currently Allocated Memory Blocks, Includes Debugging Information for Each Block.
 	*/
 	std::map<void*, Block>* GetBlocks()
@@ -108,6 +173,46 @@ namespace MemDebug
 	* Most Recent Release in Bytes.
 	*/
 	size_t GetLastDeallocated()
+	{
+		return 0;
+	}
+
+	/*
+	* Total Memory Allocated in Bytes in a Named Region.
+	*/
+	size_t GetTotalAllocated(const char* RegionName)
+	{
+		return 0;
+	}
+
+	/*
+	* Total Memory Released in Bytes in a Named Region.
+	*/
+	size_t GetTotalDeallocated(const char* RegionName)
+	{
+		return 0;
+	}
+
+	/*
+	* Total Memory Allocated and Not Yet Released in Bytes in a Named Region.
+	*/
+	size_t GetCurrentlyAllocated(const char* RegionName)
+	{
+		return 0;
+	}
+
+	/*
+	* Most Recent Allocation in Bytes in a Named Region.
+	*/
+	size_t GetLastAllocated(const char* RegionName)
+	{
+		return 0;
+	}
+
+	/*
+	* Most Recent Release in Bytes in a Named Region.
+	*/
+	size_t GetLastDeallocated(const char* RegionName)
 	{
 		return 0;
 	}

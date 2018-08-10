@@ -58,11 +58,19 @@ namespace MemDebug
 	public:
 		std::map<void*, Block> BlockMap;
 
+		// Global Allocations
 		size_t TotalAllocated = 0;
 		size_t TotalDeallocated = 0;
 		size_t CurrentlyAllocated = 0;
 		size_t LastAllocated = 0;
 		size_t LastDeallocated = 0;
+
+		// Region Allocations
+		std::map<const char*, size_t> TotalAllocatedByRegion;
+		std::map<const char*, size_t> TotalDeallocatedByRegion;
+		std::map<const char*, size_t> CurrentlyAllocatedByRegion;
+		std::map<const char*, size_t> LastAllocatedByRegion;
+		std::map<const char*, size_t> LastDeallocatedByRegion;
 
 		void PushName(const char* Name)
 		{
@@ -107,11 +115,18 @@ namespace MemDebug
 			CurrentlyAllocated += Size;
 			LastAllocated = Size;
 
+			auto* ActiveName = GetActiveName();
+			if (ActiveName)
+			{
+				TotalAllocatedByRegion[ActiveName] += Size;
+				CurrentlyAllocatedByRegion[ActiveName] += Size;
+				LastAllocatedByRegion[ActiveName] = Size;
+			}
+
 			Block NewAllocation;
 			NewAllocation.Size = Size;
 			memset(NewAllocation.Name, 0, MAX_HEAP_NAME_LENGTH);
 
-			auto* ActiveName = GetActiveName();
 			if (ActiveName)
 			{
 				memcpy(NewAllocation.Name, ActiveName, strlen(ActiveName));
@@ -140,6 +155,14 @@ namespace MemDebug
 					TotalDeallocated += Size;
 					CurrentlyAllocated -= Size;
 					LastDeallocated = Size;
+
+					auto* ActiveName = GetActiveName();
+					if (ActiveName)
+					{
+						TotalDeallocatedByRegion[ActiveName] += Size;
+						CurrentlyAllocatedByRegion[ActiveName] -= Size;
+						LastDeallocatedByRegion[ActiveName] = Size;
+					}
 
 					BlockMap.erase(BlockIter);
 				}
