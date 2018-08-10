@@ -7,6 +7,10 @@
 #include <new>
 #include <stack>
 
+#ifdef MEMDEBUG_THROW_ON_DELETE_NULLPTR
+#include <exception>
+#endif
+
 #define MAX_HEAP_NAME_LENGTH 16
 
 #define MEMDEBUG_NAMED_SIGNATURE 0xFCFD
@@ -16,8 +20,22 @@ namespace MemDebug
 {
 	class Allocator
 	{
+#ifdef MEMDEBUG_THROW_ON_DELETE_NULLPTR
+	protected:
+		static void UnexpectedHandler()
+		{
+			// Rethrow Exception, Don't Abort.
+			throw;
+		}
+#endif
+
 	public:
-		Allocator() {}
+		Allocator()
+		{
+#ifdef MEMDEBUG_THROW_ON_DELETE_NULLPTR
+			set_unexpected(UnexpectedHandler);
+#endif
+		}
 
 		static Allocator& Get()
 		{

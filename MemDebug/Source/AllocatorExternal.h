@@ -8,14 +8,32 @@
 #include <stack>
 #include <map>
 
+#ifdef MEMDEBUG_THROW_ON_DELETE_NULLPTR
+#include <exception>
+#endif
+
 #include "Block.h"
 
 namespace MemDebug
 {
 	class Allocator
 	{
+#ifdef MEMDEBUG_THROW_ON_DELETE_NULLPTR
+	protected:
+		static void UnexpectedHandler()
+		{
+			// Rethrow Exception, Don't Abort.
+			throw;
+		}
+#endif
+
 	public:
-		Allocator() {}
+		Allocator()
+		{
+#ifdef MEMDEBUG_THROW_ON_DELETE_NULLPTR
+			set_unexpected(UnexpectedHandler);
+#endif
+		}
 		~Allocator()
 		{
 			Destructing = true;
